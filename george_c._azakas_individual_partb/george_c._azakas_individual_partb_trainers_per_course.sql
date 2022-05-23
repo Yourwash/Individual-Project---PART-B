@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS `trainers_per_course`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `trainers_per_course` (
-  `trainers_trainerKey` int NOT NULL,
-  `courses_courseKey` int NOT NULL,
-  PRIMARY KEY (`trainers_trainerKey`,`courses_courseKey`),
-  KEY `fk_trainers_has_courses_courses1_idx` (`courses_courseKey`),
-  KEY `fk_trainers_has_courses_trainers1_idx` (`trainers_trainerKey`),
-  CONSTRAINT `fk_trainers_has_courses_courses1` FOREIGN KEY (`courses_courseKey`) REFERENCES `courses` (`courseKey`),
-  CONSTRAINT `fk_trainers_has_courses_trainers1` FOREIGN KEY (`trainers_trainerKey`) REFERENCES `trainers` (`trainerKey`)
+  `tpc_trainerKey` int NOT NULL,
+  `tpc_courseKey` int NOT NULL,
+  PRIMARY KEY (`tpc_trainerKey`,`tpc_courseKey`),
+  KEY `fk_trainers_has_courses_courses1_idx` (`tpc_courseKey`),
+  KEY `fk_trainers_has_courses_trainers_idx` (`tpc_trainerKey`),
+  CONSTRAINT `fk_trainers_has_courses_courses1` FOREIGN KEY (`tpc_courseKey`) REFERENCES `courses` (`courseKey`),
+  CONSTRAINT `fk_trainers_has_courses_trainers` FOREIGN KEY (`tpc_trainerKey`) REFERENCES `trainers` (`trainerKey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-22  3:56:38
+-- Dump completed on 2022-05-23  5:54:21

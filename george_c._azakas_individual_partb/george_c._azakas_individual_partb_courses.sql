@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: george_c._azakas_individual_partb
+-- Host: localhost    Database: george_c._azakas_individual_partb
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -38,6 +38,7 @@ CREATE TABLE `courses` (
 
 LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
+INSERT INTO `courses` VALUES (1,'CB1',0,'2022-01-03','2022-04-03'),(2,'CB2',1,'2022-03-04','2022-07-02'),(3,'CB3',0,'2022-07-02','2022-09-30'),(4,'CB4',1,'2022-09-30','2022-12-29'),(5,'CB5',0,'2022-12-29','2023-03-29');
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-20  6:43:38
+-- Dump completed on 2022-05-23  5:54:21

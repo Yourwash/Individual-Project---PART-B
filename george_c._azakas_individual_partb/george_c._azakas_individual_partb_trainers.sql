@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: george_c._azakas_individual_partb
+-- Host: localhost    Database: george_c._azakas_individual_partb
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -36,6 +36,7 @@ CREATE TABLE `trainers` (
 
 LOCK TABLES `trainers` WRITE;
 /*!40000 ALTER TABLE `trainers` DISABLE KEYS */;
+INSERT INTO `trainers` VALUES (4001,'Antonis','Thodos'),(4002,'Rafaila','Den8umametoepi8etotis'),(4003,'Spiros','Mavros'),(4004,'Yourwash','Pasparakis'),(4005,'Yourwash','Erakleidis'),(4006,'Jasmina','Penas'),(4007,'Anabel','Digg'),(4008,'Kat','Barhims'),(4009,'Elysee','Lowes'),(4010,'Norry','Wasielewicz'),(4011,'Ami','Spere'),(4012,'Lew','Bealing');
 /*!40000 ALTER TABLE `trainers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-20  6:43:37
+-- Dump completed on 2022-05-23  5:54:22

@@ -16,28 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `trainers`
+-- Table structure for table `course_stream`
 --
 
-DROP TABLE IF EXISTS `trainers`;
+DROP TABLE IF EXISTS `course_stream`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `trainers` (
-  `trainerKey` int NOT NULL,
-  `trnFirstName` varchar(45) DEFAULT NULL,
-  `trnLastName` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`trainerKey`)
+CREATE TABLE `course_stream` (
+  `cs_courseKey` int NOT NULL,
+  `cs_subjectKey` int NOT NULL,
+  PRIMARY KEY (`cs_courseKey`,`cs_subjectKey`),
+  KEY `fk_courses_has_subjects_subjects1_idx` (`cs_subjectKey`),
+  KEY `fk_courses_has_subjects_courses1_idx` (`cs_courseKey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `trainers`
+-- Dumping data for table `course_stream`
 --
 
-LOCK TABLES `trainers` WRITE;
-/*!40000 ALTER TABLE `trainers` DISABLE KEYS */;
-INSERT INTO `trainers` VALUES (4001,'Antonis','Thodos'),(4002,'Rafaila','Den8umametoepi8etotis'),(4003,'Spiros','Mavros'),(4004,'Yourwash','Pasparakis'),(4005,'Yourwash','Erakleidis'),(4006,'Jasmina','Penas'),(4007,'Anabel','Digg'),(4008,'Kat','Barhims'),(4009,'Elysee','Lowes'),(4010,'Norry','Wasielewicz'),(4011,'Ami','Spere'),(4012,'Lew','Bealing');
-/*!40000 ALTER TABLE `trainers` ENABLE KEYS */;
+LOCK TABLES `course_stream` WRITE;
+/*!40000 ALTER TABLE `course_stream` DISABLE KEYS */;
+INSERT INTO `course_stream` VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(1,2),(2,2),(3,2),(4,2),(5,2),(1,3),(2,3),(3,3),(4,3),(5,3),(1,4),(2,4),(3,4),(4,4),(5,4);
+/*!40000 ALTER TABLE `course_stream` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-22  3:56:38
+-- Dump completed on 2022-05-23  5:54:20
