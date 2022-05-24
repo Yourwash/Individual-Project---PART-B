@@ -27,7 +27,9 @@ CREATE TABLE `course_stream` (
   `cs_subjectKey` int NOT NULL,
   PRIMARY KEY (`cs_courseKey`,`cs_subjectKey`),
   KEY `fk_courses_has_subjects_subjects1_idx` (`cs_subjectKey`),
-  KEY `fk_courses_has_subjects_courses1_idx` (`cs_courseKey`)
+  KEY `fk_courses_has_subjects_courses1_idx` (`cs_courseKey`),
+  CONSTRAINT `cs_courseKey` FOREIGN KEY (`cs_courseKey`) REFERENCES `courses` (`courseKey`),
+  CONSTRAINT `cs_subjectKey` FOREIGN KEY (`cs_subjectKey`) REFERENCES `subjects` (`subjectKey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-23  5:54:20
+-- Dump completed on 2022-05-24  3:24:15
