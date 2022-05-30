@@ -54,7 +54,7 @@ public class StudentsPerCourse {
         StringBuilder sb = new StringBuilder();
         sb.append("Course Key: ").append(courseKey);
         sb.append("    ").append(title);
-        sb.append("\n").append(studentspc);
+        sb.append("\n").append(studentspc).append("\n");
         return sb.toString();
     }
 

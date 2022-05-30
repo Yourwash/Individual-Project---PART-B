@@ -5,7 +5,7 @@
  */
 package Models;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -73,9 +73,9 @@ public class Student {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Student's Key: ").append(studentKey);
-        sb.append(firstName).append(" ").append(lastName);
+        sb.append("    ").append(firstName).append(" ").append(lastName);
         sb.append("    Date of Birth: ").append(dob);
-        sb.append("    Tuition Fees").append(tuitionFees);
+        sb.append("    Tuition Fees").append(tuitionFees).append("\n");
         return sb.toString();
     }
  
