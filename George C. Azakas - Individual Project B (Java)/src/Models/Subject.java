@@ -40,7 +40,7 @@ public class Subject {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Subject's Key: ").append(subjectKey).append("    ").append(title);
+        sb.append(title).append("    ").append("Subject's Key: ").append(subjectKey);
         return sb.toString();
     }
     

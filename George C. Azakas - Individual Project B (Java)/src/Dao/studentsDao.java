@@ -94,14 +94,13 @@ public class studentsDao {
                     ResultSet.CONCUR_UPDATABLE);
             ps.setLong(1, studentKey);
             rs = ps.executeQuery();
+            rs.next();
+            s = new Student(rs.getLong(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getDate(4),
+                    rs.getDouble(5));
 
-            while (rs.next()) {
-                s = new Student(rs.getLong(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getDate(4),
-                        rs.getDouble(5));
-            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {

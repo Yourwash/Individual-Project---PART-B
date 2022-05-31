@@ -5,10 +5,12 @@
  */
 package Project.B;
 
-import Dao.studentsDao;
-import Dao.studentsPCDao;
-import Models.Student;
+import Dao.coursesDao;
+import Models.Course;
+import Models.Subject;
+import java.util.ArrayList;
 import java.sql.Date;
+import java.util.List;
 
 /**
  *
@@ -19,12 +21,16 @@ public class GeorgeCAzakasIndividualProjectB {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         // TODO code application logic here
-        Date d = new Date(1995,04,19);
-        Student s = new Student(1151,"George","Azakas",d,2250);
-        
-        System.out.println(studentsDao.insertStudent(s));
+        List<Subject> s = new ArrayList<>();
+        Subject e = new Subject(1, "Java");
+        s.add(e);
+        Course course;
+        Date d1 = new Date(1995,04,19);
+        Date d2 = new Date(1995,07,19);
+        course = new Course(6, "George", true, d1, d1, s);
+        System.out.println(coursesDao.insertCourse(course));
     }
-    
+
 }

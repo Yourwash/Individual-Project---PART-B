@@ -20,11 +20,14 @@ public class Trainer {
     public Trainer() {
     }
 
-    public Trainer(int trainerKey, String firstName, String lastName) {
+    public Trainer(int trainerKey, String firstName, String lastName, List<Subject> subjects) {
         this.trainerKey = trainerKey;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.subjects = subjects;
     }
+
+    
 
     public List<Subject> getSubjects() {
         return subjects;
@@ -61,10 +64,10 @@ public class Trainer {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append(firstName);
+        sb.append(" ").append(lastName).append("    ");
         sb.append("Trainer's Key: ").append(trainerKey);
-        sb.append("    ").append(firstName);
-        sb.append(" ").append(lastName);
-        sb.append("\n").append(subjects);
+        sb.append("\n").append(subjects).append("\n");
         return sb.toString();
     }
     
