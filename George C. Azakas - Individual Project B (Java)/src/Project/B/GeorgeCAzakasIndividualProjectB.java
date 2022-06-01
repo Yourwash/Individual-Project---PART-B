@@ -5,7 +5,8 @@
  */
 package Project.B;
 
-import Dao.coursesDao;
+import Dao.assignmentsPSDao;
+import Dao.assignmentsPSPCDao;
 import Models.Course;
 import Models.Subject;
 import java.util.ArrayList;
@@ -27,10 +28,10 @@ public class GeorgeCAzakasIndividualProjectB {
         Subject e = new Subject(1, "Java");
         s.add(e);
         Course course;
-        Date d1 = new Date(1995,04,19);
-        Date d2 = new Date(1995,07,19);
+        Date d1 = new Date(1995, 04, 19);
+        Date d2 = new Date(1995, 07, 19);
         course = new Course(6, "George", true, d1, d1, s);
-        System.out.println(coursesDao.insertCourse(course));
+        System.out.println(assignmentsPSPCDao.getAllAssignmentsPerStudentPerCourse());
     }
 
 }

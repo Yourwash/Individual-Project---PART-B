@@ -14,22 +14,22 @@ import java.util.List;
 public class AssignmentsPerStudentPerCourse {
     private int courseKey;
     private String title;
-    private List<AssignmetsPerStudent> assignmentspspc;
+    private List<AssignmentsPerStudent> assignmentspspc;
 
     public AssignmentsPerStudentPerCourse() {
     }
 
-    public AssignmentsPerStudentPerCourse(String title, int courseKey, List<AssignmetsPerStudent> assignmentspspc) {
+    public AssignmentsPerStudentPerCourse(String title, int courseKey, List<AssignmentsPerStudent> assignmentspspc) {
         this.title = title;
         this.courseKey = courseKey;
         this.assignmentspspc = assignmentspspc;
     }
 
-    public List<AssignmetsPerStudent> getAssignmentspspc() {
+    public List<AssignmentsPerStudent> getAssignmentspspc() {
         return assignmentspspc;
     }
 
-    public void setAssignmentspspc(List<AssignmetsPerStudent> assignmentspspc) {
+    public void setAssignmentspspc(List<AssignmentsPerStudent> assignmentspspc) {
         this.assignmentspspc = assignmentspspc;
     }
 

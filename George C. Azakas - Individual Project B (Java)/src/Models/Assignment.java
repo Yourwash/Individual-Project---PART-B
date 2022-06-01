@@ -86,7 +86,7 @@ public class Assignment {
         if (totalMark != 101) {
             sb.append("Assignment's Key: ").append(assignmentKey).append("   ").append(title);
             sb.append("    Submission Date: ").append(submisionDate);
-            sb.append("\n").append(Description);
+            sb.append("    ").append(Description).append("\n");
         } else {
             sb.append("Key: ").append(assignmentKey).append("   ").append(title);
             sb.append("    Submission Date: ").append(submisionDate);

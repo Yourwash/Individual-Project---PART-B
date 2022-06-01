@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class trainersPCDao {
 
-    public static TrainersPerCourse getStudentsPerCourse(int courseKey) {
+    public static TrainersPerCourse getTrainersPerCourse(int courseKey) {
         List<Trainer> trainers = new ArrayList<>();
         TrainersPerCourse tpc = null;
         Connection con = DbUtils.getConnection();
@@ -42,7 +42,7 @@ public class trainersPCDao {
             key = rs.getInt(5);
 
             while (rs.next()) {
-                trainers.add(trainersDao.getTrainerByKey(rs.getInt(3)));
+                trainers.add(trainersDao.getTrainerByKeyWithoutConection(rs.getInt(3), con));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
