@@ -57,9 +57,9 @@ public class assignmentsDao {
         return (result);
     }
 
-    public static boolean insertStudent(Assignment assingment) {
+    public static boolean insertAssignment(Assignment assingment) {
         Connection con = DbUtils.getConnection();
-        String sql = "insert into assignment values (?,?,?,?,?,?)";
+        String sql = "insert into assignments values (?,?,?,?,?,?)";
         PreparedStatement ps = null;
         try {
             ps = con.prepareStatement(sql);

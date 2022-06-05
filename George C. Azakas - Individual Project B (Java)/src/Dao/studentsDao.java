@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class studentsDao {
 
-    public List<Student> getAllStudents() {
+    public static List<Student> getAllStudents() {
         List<Student> result = new ArrayList<>();
         Connection con = DbUtils.getConnection();
         String sql = "select * from students";
@@ -45,8 +45,12 @@ public class studentsDao {
             ex.printStackTrace();
         } finally {
             try {
-                rs.close();
-                ps.close();
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
                 con.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -72,7 +76,9 @@ public class studentsDao {
             ex.printStackTrace();
         } finally {
             try {
-                ps.close();
+                if (ps != null) {
+                    ps.close();
+                }              
                 con.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -105,14 +111,41 @@ public class studentsDao {
             ex.printStackTrace();
         } finally {
             try {
-                rs.close();
-                ps.close();
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
                 con.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
+        return s;
+    }
 
+    public static Student getStudentByKeyWithoutConnection(Long studentKey, Connection con) {
+        Student s = null;
+        String sql = "select * from students where studentKey =?";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(sql,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            ps.setLong(1, studentKey);
+            rs = ps.executeQuery();
+            rs.next();
+            s = new Student(rs.getLong(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getDate(4),
+                    rs.getDouble(5));
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
         return s;
     }
 }

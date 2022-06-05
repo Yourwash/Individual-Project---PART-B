@@ -131,4 +131,31 @@ public class trainersPCDao {
 
         return (tpc);
     }
+
+    public static boolean insertTrainersPerCourse(List<Integer> trainerKeys, int courseKey) {
+        String sql = "insert into trainers_per_course values (?,?)";
+        Connection con = DbUtils.getConnection();
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+            for(int trainerKey: trainerKeys){
+            ps.setInt(1, trainerKey);
+            ps.setInt(2, courseKey);
+            ps.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+        return true;
+    }
 }

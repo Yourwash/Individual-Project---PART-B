@@ -123,4 +123,31 @@ public class studentsPCDao {
 
         return (spc);
     }
+
+    public static boolean insertStudentsPerCourse(List<Integer> studentKeys, int courseKey) {
+        String sql = "insert into students_per_course values (?,?)";
+        Connection con = DbUtils.getConnection();
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+            for(int studentKey: studentKeys){
+            ps.setInt(1, studentKey);
+            ps.setInt(2, courseKey);
+            ps.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+        return true;
+    }
 }

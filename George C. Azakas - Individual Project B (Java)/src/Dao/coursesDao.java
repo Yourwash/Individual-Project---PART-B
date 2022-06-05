@@ -15,8 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -36,7 +34,7 @@ public class coursesDao {
                     ResultSet.CONCUR_UPDATABLE);
             rs = ps.executeQuery();
             while (rs.next()) {
-                result.add(getCourseByKeyWithoutConection(rs.getInt(1), con));
+                result.add(getCourseByKeyWithoutConnection(rs.getInt(1), con));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -62,7 +60,9 @@ public class coursesDao {
         PreparedStatement ps;
         String sql = "insert into courses values (?,?,?,?,?)";
         try {
-            ps = con.prepareStatement(sql);
+            ps = con.prepareStatement(sql,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
             ps.setInt(1, course.getCourseKey());
             ps.setString(2, course.getTitle());
             ps.setBoolean(3, course.isType());
@@ -77,7 +77,9 @@ public class coursesDao {
         ps = null;
         try {
             for (Subject s : course.getSubjects()) {
-                ps = con.prepareStatement(sql);
+                ps = con.prepareStatement(sql,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
                 ps.setInt(1, course.getCourseKey());
                 ps.setInt(2, s.getSubjectKey());
                 ps.executeUpdate();
@@ -111,7 +113,7 @@ public class coursesDao {
         return (course);
     }
 
-    public static Course getCourseByKeyWithoutConection(int courseKey, Connection con) {
+    public static Course getCourseByKeyWithoutConnection(int courseKey, Connection con) {
         Course course;
         course = getCourseInfoByKeyWithoutConnection(courseKey, con, getCourseSubjectsWithoutConnection(courseKey, con));
         return course;
@@ -119,8 +121,8 @@ public class coursesDao {
 
     public static List<Subject> getCourseSubjectsWithoutConnection(int courseKey, Connection con) {
         List<Subject> subjects = new ArrayList<>();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+        PreparedStatement ps;
+        ResultSet rs;
         Subject s;
         String sql = "select * from course_stream_list where cs_courseKey =?";
         try {
@@ -135,17 +137,6 @@ public class coursesDao {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(trainersDao.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         return subjects;
     }
@@ -179,7 +170,7 @@ public class coursesDao {
                     rs.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(trainersDao.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
         return (course);

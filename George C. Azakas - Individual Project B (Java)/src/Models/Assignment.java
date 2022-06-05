@@ -32,6 +32,12 @@ public class Assignment {
         this.totalMark = totalMark;
     }
 
+    public Assignment(String title, String Description, Date submisionDate) {
+        this.title = title;
+        this.Description = Description;
+        this.submisionDate = submisionDate;
+    }
+
     public int getTotalMark() {
         return totalMark;
     }

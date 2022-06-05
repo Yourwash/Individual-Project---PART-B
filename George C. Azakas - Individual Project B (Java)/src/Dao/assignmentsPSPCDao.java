@@ -19,7 +19,7 @@ import java.util.List;
  * @author Dante_Fiero
  */
 public class assignmentsPSPCDao {
-    
+
     public static List<AssignmentsPerStudentPerCourse> getAllAssignmentsPerStudentPerCourse() {
         List<AssignmentsPerStudentPerCourse> assignmentsPSPC = new ArrayList<>();
         Connection con = DbUtils.getConnection();
@@ -53,7 +53,7 @@ public class assignmentsPSPCDao {
 
         return (assignmentsPSPC);
     }
-    
+
     public static AssignmentsPerStudentPerCourse getAssignmentsPerStudentPerCourseByCourseKeyWithoutConnection(int courseKey, Connection con) {
         AssignmentsPerStudentPerCourse apspc = new AssignmentsPerStudentPerCourse();
         String sql = "select courseKey, title from courses where courseKey = ?";
@@ -74,5 +74,33 @@ public class assignmentsPSPCDao {
         }
         return (apspc);
     }
-    
+
+    public static boolean insertAssignmentsPerStudentPerCourse(List<Integer> assignmentKeys, int studentKey, int courseKey) {
+        String sql = "insert into assignments_per_student_per_course values (?,?,?,101,101)";
+        Connection con = DbUtils.getConnection();
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+            for (int assignmentKey : assignmentKeys) {
+                ps.setInt(1, assignmentKey);
+                ps.setInt(2, studentKey);
+                ps.setInt(3, courseKey);
+                ps.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+        return true;
+    }
+
 }
