@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: george_c._azakas_individual_partb
 -- ------------------------------------------------------
--- Server version	8.0.29
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `students_per_course_per_subject`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `students_per_course_per_subject` (
-  `spcps_studentKey` bigint NOT NULL,
+  `spcps_studentKey` bigint NOT NULL AUTO_INCREMENT,
   `spcps_courseKey` int NOT NULL,
   `spcps_subjectKey` int NOT NULL,
   PRIMARY KEY (`spcps_studentKey`,`spcps_courseKey`,`spcps_subjectKey`),
@@ -31,7 +31,7 @@ CREATE TABLE `students_per_course_per_subject` (
   KEY `fk_students_has_stream_students1_idx` (`spcps_studentKey`),
   CONSTRAINT `fk_students_has_stream_stream1` FOREIGN KEY (`spcps_courseKey`, `spcps_subjectKey`) REFERENCES `course_stream` (`cs_courseKey`, `cs_subjectKey`),
   CONSTRAINT `fk_students_has_stream_students1` FOREIGN KEY (`spcps_studentKey`) REFERENCES `students` (`studentKey`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1150110884 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-31  6:26:23
+-- Dump completed on 2022-06-06  8:47:51

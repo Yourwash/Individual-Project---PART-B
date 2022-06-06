@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: george_c._azakas_individual_partb
 -- ------------------------------------------------------
--- Server version	8.0.29
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -38,7 +38,7 @@ CREATE TABLE `courses` (
 
 LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
-INSERT INTO `courses` VALUES (1,'CB1',0,'2022-01-03','2022-04-03'),(2,'CB2',1,'2022-03-04','2022-07-02'),(3,'CB3',0,'2022-07-02','2022-09-30'),(4,'CB4',1,'2022-09-30','2022-12-29'),(5,'CB5',0,'2022-12-29','2023-03-29'),(6,'George',1,'3895-05-19','3895-05-19');
+INSERT INTO `courses` VALUES (1,'CB1',0,'2022-01-03','2022-04-03'),(2,'CB2',1,'2022-03-04','2022-07-02'),(3,'CB3',0,'2022-07-02','2022-09-30'),(4,'CB4',1,'2022-09-30','2022-12-29'),(5,'CB5',0,'2022-12-29','2023-03-29');
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-31  6:26:22
+-- Dump completed on 2022-06-06  8:47:50

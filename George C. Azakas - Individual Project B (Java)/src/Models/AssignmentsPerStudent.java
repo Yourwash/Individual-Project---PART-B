@@ -67,9 +67,6 @@ public class AssignmentsPerStudent {
         sb.append("    Student's Key: ").append(studentKey);
         sb.append("\n").append(assignmentsps);
         return sb.toString();
-    }
-    
-    
-            
+    }         
            
 }

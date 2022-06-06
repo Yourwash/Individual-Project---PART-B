@@ -12,6 +12,7 @@ import java.sql.Date;
  * @author Dante_Fiero
  */
 public class Student {
+
     private long studentKey;
     private String firstName;
     private String lastName;
@@ -23,6 +24,13 @@ public class Student {
 
     public Student(long studentKey, String firstName, String lastName, Date dob, double tuitionFees) {
         this.studentKey = studentKey;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.tuitionFees = tuitionFees;
+    }
+
+    public Student(String firstName, String lastName, Date dob, double tuitionFees) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
@@ -78,8 +86,5 @@ public class Student {
         sb.append("    Tuition Fees").append(tuitionFees).append("\n");
         return sb.toString();
     }
- 
-    
-    
-    
+
 }

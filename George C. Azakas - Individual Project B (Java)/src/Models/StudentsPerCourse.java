@@ -57,13 +57,5 @@ public class StudentsPerCourse {
         sb.append("\n").append(studentspc).append("\n");
         return sb.toString();
     }
-
    
-
-  
-    
-    
-    
-    
-    
 }

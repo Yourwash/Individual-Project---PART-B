@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: george_c._azakas_individual_partb
 -- ------------------------------------------------------
--- Server version	8.0.29
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -31,8 +31,7 @@ CREATE TABLE `assignments_per_student_per_course` (
   PRIMARY KEY (`apspc_assignmentKey`,`apspc_studentKey`,`apspc_courseKey`),
   KEY `fk_assignments_has_students_has_courses_students_has_course_idx` (`apspc_studentKey`,`apspc_courseKey`),
   KEY `fk_assignments_has_students_has_courses_assignments1_idx` (`apspc_assignmentKey`),
-  CONSTRAINT `fk_assignments_has_students_has_courses_assignments1` FOREIGN KEY (`apspc_assignmentKey`) REFERENCES `assignments` (`assignmentKey`),
-  CONSTRAINT `fk_assignments_has_students_has_courses_students_has_courses1` FOREIGN KEY (`apspc_studentKey`, `apspc_courseKey`) REFERENCES `students_per_course` (`spc_studentKey`, `spc_courseKey`)
+  CONSTRAINT `fk_assignments_has_students_has_courses_assignments1` FOREIGN KEY (`apspc_assignmentKey`) REFERENCES `assignments` (`assignmentKey`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -55,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-31  6:26:22
+-- Dump completed on 2022-06-06  8:47:51

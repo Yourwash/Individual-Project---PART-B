@@ -22,8 +22,9 @@ import java.util.ArrayList;
 public class assignmentsDao {
 
     public static List getAllAssignments() {
-        List<Assignment> result = new ArrayList<>();
+        List<Assignment> aList = new ArrayList<>();
         Connection con = DbUtils.getConnection();
+        Assignment assignment = new Assignment();
         String sql = "select assignmentKey from assignments";
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -32,29 +33,28 @@ public class assignmentsDao {
             ps = con.prepareCall(sql,
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
-              while (rs.next()) {
-                Assignment s = new Assignment(rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getDate(4),
-                        rs.getInt(5),
-                        rs.getInt(6));
-                result.add(s);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                aList.add(getAssignmentByKeyWithoutConnection(rs.getInt(1), con));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            
-        }finally{
+
+        } finally {
             try {
-                rs.close();
-                ps.close();
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
                 con.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
 
-        return (result);
+        return (aList);
     }
 
     public static boolean insertAssignment(Assignment assingment) {
@@ -74,7 +74,9 @@ public class assignmentsDao {
             ex.printStackTrace();
         } finally {
             try {
-                ps.close();
+                if (ps != null) {
+                    ps.close();
+                }
                 con.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -85,9 +87,9 @@ public class assignmentsDao {
     }
 
     public static Assignment getAssignmentByKey(int assignmentKey) {
-        Assignment assignment = null;
+        Assignment assignment = new Assignment();
         Connection con = DbUtils.getConnection();
-        String sql = "select * from assignment where assignmentKey =?";
+        String sql = "select * from assignments where assignmentKey =?";
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -96,23 +98,54 @@ public class assignmentsDao {
                     ResultSet.CONCUR_UPDATABLE);
             ps.setLong(1, assignmentKey);
             rs = ps.executeQuery();
-            rs.next();
-            assignment = new Assignment(rs.getInt(1),
+            if (rs.next()) {
+                assignment.setAssignmentKey(assignmentKey);
+                assignment.setTitle(rs.getString(2));
+                assignment.setDescription(rs.getString(3));
+                assignment.setSubmisionDate(rs.getDate(4));
+                assignment.setOralMark(rs.getInt(5));
+                assignment.setTotalMark(rs.getInt(6));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return assignment;
+    }
+
+    public static Assignment getAssignmentByKeyWithoutConnection(int assignmentKey, Connection con) {
+        Assignment assignment = null;
+        String sql = "select * from assignments where assignmentKey =?";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(sql,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            ps.setInt(1, assignmentKey);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                assignment = new Assignment(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getDate(4),
                         rs.getInt(5),
                         rs.getInt(6));
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                rs.close();
-                ps.close();
-                con.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
         }
 
         return assignment;

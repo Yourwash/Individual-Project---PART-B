@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: george_c._azakas_individual_partb
 -- ------------------------------------------------------
--- Server version	8.0.29
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,8 +28,7 @@ CREATE TABLE `students_per_course` (
   PRIMARY KEY (`spc_studentKey`,`spc_courseKey`),
   KEY `fk_students_has_courses_courses1_idx` (`spc_courseKey`),
   KEY `fk_students_has_courses_students1_idx` (`spc_studentKey`),
-  CONSTRAINT `fk_students_has_courses_courses1` FOREIGN KEY (`spc_courseKey`) REFERENCES `courses` (`courseKey`),
-  CONSTRAINT `fk_students_has_courses_students1` FOREIGN KEY (`spc_studentKey`) REFERENCES `students` (`studentKey`)
+  CONSTRAINT `fk_students_has_courses_courses1` FOREIGN KEY (`spc_courseKey`) REFERENCES `courses` (`courseKey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -52,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-31  6:26:22
+-- Dump completed on 2022-06-06  8:47:51

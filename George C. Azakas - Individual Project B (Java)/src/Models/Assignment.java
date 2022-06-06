@@ -31,6 +31,14 @@ public class Assignment {
         this.oralMark = oralMark;
         this.totalMark = totalMark;
     }
+    
+    public Assignment(int assignmentKey, String title, String Description, Date submisionDate) {
+        this.assignmentKey = assignmentKey;
+        this.title = title;
+        this.Description = Description;
+        this.submisionDate = submisionDate;
+
+    }
 
     public Assignment(String title, String Description, Date submisionDate) {
         this.title = title;
