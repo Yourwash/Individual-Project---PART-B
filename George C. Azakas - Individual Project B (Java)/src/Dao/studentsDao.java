@@ -7,6 +7,8 @@ package Dao;
 
 import Models.Student;
 import Util.DbUtils;
+import Util.Input;
+import Util.UIutils;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -78,7 +80,7 @@ public class studentsDao {
             try {
                 if (ps != null) {
                     ps.close();
-                }              
+                }
                 con.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -147,5 +149,93 @@ public class studentsDao {
             ex.printStackTrace();
         }
         return s;
+    }
+
+    public static void showCourselessStudentsList(Connection con) {
+        String sql = "select * from courseless_students_list";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                System.out.println("For " + studentsDao.getStudentByKeyWithoutConnection(rs.getLong(1), con)
+                        + " input " + rs.getLong(1) + ".");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public static void showAssignmentlessStudentsList(Connection con) {
+        String sql = "select * from assignmentless_students_list";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                System.out.println("For " + studentsDao.getStudentByKeyWithoutConnection(rs.getLong(1), con)
+                        + " input " + rs.getLong(1) + ".");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static List<Student> userCreateStudentList() {
+        List<Student> sList = new ArrayList<>();
+        Connection con = DbUtils.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        showCourselessStudentsList(con);
+        String sql = "select studentKey from students where studentKey = ?";
+        do {
+            try {
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, Input.inputInt());
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    sList.add(getStudentByKeyWithoutConnection(rs.getLong(1), con));
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } while (UIutils.goNextYON());
+        try {
+            if (ps != null) {
+                ps.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return (sList);
+    }
+
+    public static List<Student> userCreateStudentListWithoutConnection(Connection con) {
+        List<Student> sList = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        showCourselessStudentsList(con);
+        String sql = "select studentKey from students where studentKey = ?";
+        do {
+            try {
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, Input.inputInt());
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    sList.add(getStudentByKeyWithoutConnection(rs.getLong(1), con));
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } while (UIutils.goNextYON());
+        return (sList);
     }
 }

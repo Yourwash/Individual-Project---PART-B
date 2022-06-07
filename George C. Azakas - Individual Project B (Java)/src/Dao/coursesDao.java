@@ -8,6 +8,7 @@ package Dao;
 import Models.Course;
 import Models.Subject;
 import Util.DbUtils;
+import Util.Input;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -15,12 +16,61 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Dante_Fiero
  */
 public class coursesDao {
+
+    public static Course selectCourse() {
+        Connection con = DbUtils.getConnection();
+        String sql = "select * from courses where courseKey=?";
+        Course course = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = con.prepareStatement(sql);
+            showCourseList(con);
+            ps.setInt(1, Input.inputInt());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                course = getCourseByKey(rs.getInt(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(coursesDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return (course);
+    }
+
+    public static void showCourseList(Connection con) {
+        String sql = "select courseKey from courses";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                System.out.println("For " + getCourseByKey(rs.getInt(1)).getTitle() + " input " + rs.getInt(1) + ".");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public static List<Course> getAllCourses() {
         List<Course> result = new ArrayList<>();
@@ -78,8 +128,8 @@ public class coursesDao {
         try {
             for (Subject s : course.getSubjects()) {
                 ps = con.prepareStatement(sql,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+                        ResultSet.TYPE_SCROLL_INSENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
                 ps.setInt(1, course.getCourseKey());
                 ps.setInt(2, s.getSubjectKey());
                 ps.executeUpdate();
@@ -153,11 +203,11 @@ public class coursesDao {
             ps.setInt(1, courseKey);
             rs = ps.executeQuery();
             rs.next();
-            course = new Course (rs.getInt(1),
+            course = new Course(rs.getInt(1),
                     rs.getString(2),
                     rs.getBoolean(3),
                     rs.getDate(4),
-                    rs.getDate(5),                   
+                    rs.getDate(5),
                     subjects);
         } catch (SQLException ex) {
             ex.printStackTrace();

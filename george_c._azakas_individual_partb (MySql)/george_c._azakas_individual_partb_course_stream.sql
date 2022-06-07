@@ -39,7 +39,7 @@ CREATE TABLE `course_stream` (
 
 LOCK TABLES `course_stream` WRITE;
 /*!40000 ALTER TABLE `course_stream` DISABLE KEYS */;
-INSERT INTO `course_stream` VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(1,2),(2,2),(3,2),(4,2),(5,2),(1,3),(2,3),(3,3),(4,3),(5,3),(1,4),(2,4),(3,4),(4,4),(5,4);
+INSERT INTO `course_stream` VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(7,1),(1,2),(2,2),(3,2),(4,2),(5,2),(6,2),(9,2),(1,3),(2,3),(3,3),(4,3),(5,3),(1,4),(2,4),(3,4),(4,4),(5,4),(8,4),(10,4);
 /*!40000 ALTER TABLE `course_stream` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-06  8:47:51
+-- Dump completed on 2022-06-07  5:49:17

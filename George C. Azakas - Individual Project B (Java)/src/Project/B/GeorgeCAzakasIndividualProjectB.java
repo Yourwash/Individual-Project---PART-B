@@ -5,22 +5,10 @@
  */
 package Project.B;
 
-import Dao.assignmentsDao;
-import Dao.assignmentsPCDao;
-import Dao.assignmentsPSDao;
-import Dao.assignmentsPSPCDao;
-import Dao.coursesDao;
-import Dao.returneeSDao;
-import Models.Assignment;
-import Models.Course;
-import Models.Subject;
 import UI.InputMenu;
 import UI.ListOutputMenu;
 import Util.Input;
-import Util.KeyGenerator;
-import java.util.ArrayList;
-import java.sql.Date;
-import java.util.List;
+import Util.UIutils;
 
 /**
  *
@@ -32,24 +20,20 @@ public class GeorgeCAzakasIndividualProjectB {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-//        // TODO code application logic here
-//        List<Integer> assignmentKeys = new ArrayList<>();
-//        int e = 200;
-//        assignmentKeys.add(e);
-//        Course course;
-//        Date d1 = new Date(1995, 04, 19);
-//        Date d2 = new Date(1995, 07, 19);
-////        course = new Course(6, "George", true, d1, d1, s);
-//        Assignment a = new Assignment(200, "adasd", "asdad", d1, 0, 0);
-//
-//        System.out.println(assignmentsDao.getAllAssignments());
-////        System.out.println(coursesDao.getAllCourses());
-//        System.out.println(returneeSDao.getAllReturneeStudents());
 
-//       ListOutputMenu.listOutputMenu();
-//        InputMenu.inputStudent();
-//        System.out.println(KeyGenerator.studentKeyGenerator());
-        System.out.println(Input.inputBoolean());
+        do {
+            System.out.println("To see a list type 1");
+            System.out.println("To input data type 2");
+            switch (Input.inputInt()) {
+                case 1: {
+                    ListOutputMenu.listOutputMenu();
+                }
+                case 2: {
+                    InputMenu.InputMenu();
+                }
+            }
+        } while (UIutils.goNextYONShowMore());
+
     }
 
 }

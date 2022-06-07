@@ -51,8 +51,12 @@ public class studentsPCDao {
                 spc = new StudentsPerCourse(title,
                         key,
                         students);
-                rs.close();
-                ps.close();
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
                 con.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -81,8 +85,12 @@ public class studentsPCDao {
             Logger.getLogger(studentsPCDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                rs.close();
-                ps.close();
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
                 con.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -124,16 +132,16 @@ public class studentsPCDao {
         return (spc);
     }
 
-    public static boolean insertStudentsPerCourse(List<Integer> studentKeys, int courseKey) {
+    public static boolean insertStudentsPerCourse(StudentsPerCourse stp) {
         String sql = "insert into students_per_course values (?,?)";
         Connection con = DbUtils.getConnection();
         PreparedStatement ps = null;
         try {
             ps = con.prepareStatement(sql);
-            for(int studentKey: studentKeys){
-            ps.setInt(1, studentKey);
-            ps.setInt(2, courseKey);
-            ps.executeUpdate();
+            for (Student student : stp.getStudentspc()) {
+                ps.setLong(1, student.getStudentKey());
+                ps.setInt(2, stp.getCourseKey());
+                ps.executeUpdate();
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -146,7 +154,22 @@ public class studentsPCDao {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+        }
+        return true;
+    }
 
+    public static boolean insertStudentsPerCourseWithoutConnection(StudentsPerCourse stp, Connection con) {
+        String sql = "insert into students_per_course values (?,?)";
+        PreparedStatement ps;
+        try {
+            ps = con.prepareStatement(sql);
+            for (Student student : stp.getStudentspc()) {
+                ps.setLong(1, student.getStudentKey());
+                ps.setInt(2, stp.getCourseKey());
+                ps.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return true;
     }

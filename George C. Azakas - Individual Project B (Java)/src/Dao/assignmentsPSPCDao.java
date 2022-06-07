@@ -5,6 +5,8 @@
  */
 package Dao;
 
+import Models.Assignment;
+import Models.AssignmentsPerStudent;
 import Models.AssignmentsPerStudentPerCourse;
 import Util.DbUtils;
 import java.sql.Connection;
@@ -75,17 +77,19 @@ public class assignmentsPSPCDao {
         return (apspc);
     }
 
-    public static boolean insertAssignmentsPerStudentPerCourse(List<Integer> assignmentKeys, int studentKey, int courseKey) {
-        String sql = "insert into assignments_per_student_per_course values (?,?,?,101,101)";
+    public static boolean insertAssignmentsPerStudentPerCourse(AssignmentsPerStudentPerCourse apspc) {
+        String sql = "insert into assignments_per_student_per_course values (?,?,?)";
         Connection con = DbUtils.getConnection();
         PreparedStatement ps = null;
         try {
             ps = con.prepareStatement(sql);
-            for (int assignmentKey : assignmentKeys) {
-                ps.setInt(1, assignmentKey);
-                ps.setInt(2, studentKey);
-                ps.setInt(3, courseKey);
-                ps.executeUpdate();
+            for (AssignmentsPerStudent aps : apspc.getAssignmentspspc()) {
+                for (Assignment assignment : aps.getAssignmentsps()) {
+                    ps.setInt(1, assignment.getAssignmentKey());
+                    ps.setLong(2, aps.getStudentKey());
+                    ps.setInt(3, apspc.getCourseKey());
+                    ps.executeUpdate();
+                }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

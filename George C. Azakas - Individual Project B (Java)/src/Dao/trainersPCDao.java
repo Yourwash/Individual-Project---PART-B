@@ -42,7 +42,7 @@ public class trainersPCDao {
             key = rs.getInt(5);
 
             while (rs.next()) {
-                trainers.add(trainersDao.getTrainerByKeyWithoutConection(rs.getInt(3), con));
+                trainers.add(trainersDao.getTrainerByKeyWithoutConnection(rs.getInt(3), con));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -132,15 +132,15 @@ public class trainersPCDao {
         return (tpc);
     }
 
-    public static boolean insertTrainersPerCourse(List<Integer> trainerKeys, int courseKey) {
+    public static boolean insertTrainersPerCourse(TrainersPerCourse tpc) {
         String sql = "insert into trainers_per_course values (?,?)";
         Connection con = DbUtils.getConnection();
         PreparedStatement ps = null;
         try {
             ps = con.prepareStatement(sql);
-            for(int trainerKey: trainerKeys){
-            ps.setInt(1, trainerKey);
-            ps.setInt(2, courseKey);
+            for(Trainer trainer: tpc.getTrainerspc()){
+            ps.setInt(1, trainer.getTrainerKey());
+            ps.setInt(2, tpc.getCourseKey());
             ps.executeUpdate();
             }
         } catch (SQLException ex) {
@@ -155,6 +155,22 @@ public class trainersPCDao {
                 ex.printStackTrace();
             }
 
+        }
+        return true;
+    }
+    
+    public static boolean insertTrainersPerCourseWithoutConnection(TrainersPerCourse tpc, Connection con) {
+        String sql = "insert into trainers_per_course values (?,?)";
+        PreparedStatement ps;
+        try {
+            ps = con.prepareStatement(sql);
+            for(Trainer trainer: tpc.getTrainerspc()){
+            ps.setInt(1, trainer.getTrainerKey());
+            ps.setInt(2, tpc.getCourseKey());
+            ps.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return true;
     }

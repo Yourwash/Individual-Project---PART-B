@@ -1,6 +1,5 @@
 package Dao;
 
-
 import Models.Subject;
 import Util.DbUtils;
 import Util.Input;
@@ -44,14 +43,15 @@ public class subjectsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         showSubjectList(con);
+        String sql = "select subjectKey from subjects where subjectKey = ?";
         do {
-            String sql = "select subTitle from subjects where subjectKey = ?";
             try {
                 ps = con.prepareStatement(sql);
                 ps.setInt(1, Input.inputInt());
                 rs = ps.executeQuery();
-                sList.add(getSubjectBySubjectKeyWithoutConnection(rs.getInt(1), con));
-                return (sList);
+                if (rs.next()) {
+                    sList.add(getSubjectBySubjectKeyWithoutConnection(rs.getInt(1), con));
+                }                
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -68,6 +68,27 @@ public class subjectsDao {
             ex.printStackTrace();
         }
 
+        return (sList);
+    }
+
+    public static List<Subject> userCreateSubjectListWithoutConnection(Connection con) {
+        List<Subject> sList = new ArrayList<>();
+        PreparedStatement ps;
+        ResultSet rs;
+        showSubjectList(con);
+        String sql = "select subjectKey from subjects where subjectKey = ?";
+        do {
+            try {
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, Input.inputInt());
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    sList.add(getSubjectBySubjectKeyWithoutConnection(rs.getInt(1), con));
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } while (UIutils.goNextYON());
         return (sList);
     }
 

@@ -18,12 +18,10 @@ public class KeyGenerator {
 //    All of these methods create a key, based on a count returned from mySQL. 
 //    They check, if the key already exists in the database.
 //    If it does, they raise it by one and check again.        
-
     public static int studentKeyGenerator() {
-        
+
 //        In this case the check is not used, becouse of a trigger in the database,
 //        that changes the student key, based on the date of birth.
-
         int key = 0;
         Connection con = DbUtils.getConnection();
         String sql = "select count(studentKey) from students";
@@ -33,7 +31,7 @@ public class KeyGenerator {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             if (rs.next()) {
-                key = rs.getInt(1) + 1001;               
+                key = rs.getInt(1) + 1001;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -64,15 +62,14 @@ public class KeyGenerator {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             if (rs.next()) {
-                key = rs.getInt(1) + 401;
                 sql = "select trainerKey from trainers where trainerKey = ?";
-                while (rs.next()) {
-                    key = key + 1;
+                do {
+                    key = rs.getInt(1) + 4001;
                     ps = con.prepareStatement(sql);
-                    rs = ps.executeQuery();
                     ps.setInt(1, key);
-
-                }
+                    rs = ps.executeQuery();
+                    key = key +1;
+                } while (rs.next());
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -104,15 +101,14 @@ public class KeyGenerator {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             if (rs.next()) {
-                key = rs.getInt(1) + 1;
                 sql = "select courseKey from courses where courseKey = ?";
-                while (rs.next()) {
-                    key = key + 1;
+                do {
+                    key = rs.getInt(1) + 1;
                     ps = con.prepareStatement(sql);
-                    rs = ps.executeQuery();
                     ps.setInt(1, key);
-
-                }
+                    rs = ps.executeQuery();
+                    key = key +1;
+                } while (rs.next());
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -143,16 +139,15 @@ public class KeyGenerator {
         try {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            if (rs.next()) {
-                key = rs.getInt(1) + 1;
+            if (rs.next()) {          
                 sql = "select assignmentKey from assignments where assignmentKey = ?";
-                while (rs.next()) {
-                    key = key + 1;
+                do {
+                    key = rs.getInt(1) + 1;
                     ps = con.prepareStatement(sql);
-                    rs = ps.executeQuery();
                     ps.setInt(1, key);
-
-                }
+                    rs = ps.executeQuery();
+                    key = key +1;
+                } while (rs.next());
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -170,7 +165,6 @@ public class KeyGenerator {
                 ex.printStackTrace();
             }
         }
-
         return (key);
     }
 
@@ -184,15 +178,14 @@ public class KeyGenerator {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             if (rs.next()) {
-                key = rs.getInt(1) + 1;
                 sql = "select subjectKey from subjects where subjectKey = ?";
-                while (rs.next()) {
-                    key = key + 1;
+                do {
+                    key = rs.getInt(1) + 1;
                     ps = con.prepareStatement(sql);
-                    rs = ps.executeQuery();
                     ps.setInt(1, key);
-
-                }
+                    rs = ps.executeQuery();
+                    key = key +1;
+                } while (rs.next());
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -210,7 +203,6 @@ public class KeyGenerator {
                 ex.printStackTrace();
             }
         }
-
         return (key);
     }
 }

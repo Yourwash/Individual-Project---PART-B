@@ -8,6 +8,8 @@ package Dao;
 import Models.Assignment;
 import java.util.List;
 import Util.DbUtils;
+import Util.Input;
+import Util.UIutils;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -149,5 +151,55 @@ public class assignmentsDao {
         }
 
         return assignment;
+    }
+    
+    public static void showStudentlessAssingmentsList(Connection con) {
+        String sql = "select * from studentless_assignments_list";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                System.out.println("For " + getAssignmentByKeyWithoutConnection(rs.getInt(1), con)
+                        + " input " + rs.getLong(1) + ".");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static List<Assignment> userCreateAssignmentsList() {
+        List<Assignment> aList = new ArrayList<>();
+        Connection con = DbUtils.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        showStudentlessAssingmentsList(con);
+        String sql = "select studentKey from students where studentKey = ?";
+        do {
+            try {
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, Input.inputInt());
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    aList.add(getAssignmentByKeyWithoutConnection(rs.getInt(1), con));
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } while (UIutils.goNextYON());
+        try {
+            if (ps != null) {
+                ps.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return (aList);
     }
 }

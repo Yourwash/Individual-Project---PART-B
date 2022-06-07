@@ -6,18 +6,29 @@
 package Util;
 
 import Dao.assignmentsDao;
+import Dao.assignmentsPSDao;
+import Dao.assignmentsPSPCDao;
 import Dao.coursesDao;
 import Dao.studentsDao;
+import Dao.studentsPCDao;
 import Dao.subjectsDao;
 import Dao.trainersDao;
+import Dao.trainersPCDao;
 import Models.Assignment;
+import Models.AssignmentsPerStudentPerCourse;
 import Models.Course;
 import Models.Student;
+import Models.StudentsPerCourse;
 import Models.Trainer;
+import Models.TrainersPerCourse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
 import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -116,7 +127,9 @@ public class Input extends KeyGenerator {
     }
 
     public static void inputTrainer() {
-        Trainer trainer = new Trainer(trainerKeyGenerator(), inputText(), inputText(), subjectsDao.userCreateSubjectList());
+        Connection con = DbUtils.getConnection();
+        Trainer trainer = new Trainer(trainerKeyGenerator(), inputText(), inputText(),
+                subjectsDao.userCreateSubjectList());
         trainersDao.insertTrainer(trainer);
         System.out.println("Trainer has been added.");
     }
@@ -128,18 +141,34 @@ public class Input extends KeyGenerator {
     }
 
     public static void inputCourse() {
-        Course course = new Course(courseKeyGenerator(), inputText(), inputBoolean(), inputDate(), inputDate(), subjectsDao.userCreateSubjectList());
+        Course course = new Course(courseKeyGenerator(), inputText(), inputBoolean(), inputDate(), inputDate(),
+                subjectsDao.userCreateSubjectList());
         coursesDao.insertCourse(course);
         System.out.println("Course has beed added.");
     }
 
-    public static void inputStudentSPerCourse() {
+    public static void inputStudentsPerCourse() {
+        Course course = coursesDao.selectCourse();
+        StudentsPerCourse stp = new StudentsPerCourse(course.getTitle(), course.getCourseKey(),
+                studentsDao.userCreateStudentList());
+        studentsPCDao.insertStudentsPerCourse(stp);
+        System.out.println("Students per course have beed added.");
     }
 
-    public static void inputTrainerSPerCours() {
+    public static void inputTrainersPerCourse() {
+        Course course = coursesDao.selectCourse();
+        TrainersPerCourse tpc = new TrainersPerCourse(course.getTitle(), course.getCourseKey(),
+                trainersDao.userCreateTrainerList());
+        trainersPCDao.insertTrainersPerCourse(tpc);
+        System.out.println("Trainers per course have beed added.");
     }
 
     public static void inputAssignmentsPerStudentPerCourse() {
+        Course course = coursesDao.selectCourse();
+        AssignmentsPerStudentPerCourse apspc = new AssignmentsPerStudentPerCourse(course.getTitle(), course.getCourseKey(),
+                assignmentsPSDao.userCreateAssignmentsPerStudentList());
+        assignmentsPSPCDao.insertAssignmentsPerStudentPerCourse(apspc);
+        System.out.println("Assingments per student per course have beed added.");
     }
 
 }
