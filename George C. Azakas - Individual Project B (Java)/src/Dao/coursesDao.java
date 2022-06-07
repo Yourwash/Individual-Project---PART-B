@@ -55,22 +55,7 @@ public class coursesDao {
             }
         }
         return (course);
-    }
-
-    public static void showCourseList(Connection con) {
-        String sql = "select courseKey from courses";
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                System.out.println("For " + getCourseByKey(rs.getInt(1)).getTitle() + " input " + rs.getInt(1) + ".");
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
+    }   
 
     public static List<Course> getAllCourses() {
         List<Course> result = new ArrayList<>();
@@ -161,6 +146,21 @@ public class coursesDao {
             ex.printStackTrace();
         }
         return (course);
+    }
+    
+    public static void showCourseList(Connection con) {
+        String sql = "select courseKey from courses";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                System.out.println("For " + getCourseByKey(rs.getInt(1)).getTitle() + " input " + rs.getInt(1) + ".");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static Course getCourseByKeyWithoutConnection(int courseKey, Connection con) {

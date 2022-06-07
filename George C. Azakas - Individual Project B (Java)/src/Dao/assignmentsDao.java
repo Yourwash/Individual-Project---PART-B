@@ -26,11 +26,9 @@ public class assignmentsDao {
     public static List getAllAssignments() {
         List<Assignment> aList = new ArrayList<>();
         Connection con = DbUtils.getConnection();
-        Assignment assignment = new Assignment();
         String sql = "select assignmentKey from assignments";
         PreparedStatement ps = null;
         ResultSet rs = null;
-
         try {
             ps = con.prepareCall(sql,
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -41,7 +39,6 @@ public class assignmentsDao {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-
         } finally {
             try {
                 if (ps != null) {
@@ -55,7 +52,6 @@ public class assignmentsDao {
                 ex.printStackTrace();
             }
         }
-
         return (aList);
     }
 
@@ -83,7 +79,6 @@ public class assignmentsDao {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-
         }
         return true;
     }
@@ -125,9 +120,42 @@ public class assignmentsDao {
         }
 
         return assignment;
-    }
+    }  
 
-    public static Assignment getAssignmentByKeyWithoutConnection(int assignmentKey, Connection con) {
+    public static List<Assignment> userCreateAssignmentsList() {
+        List<Assignment> aList = new ArrayList<>();
+        Connection con = DbUtils.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        showStudentlessAssingmentsList(con);
+        String sql = "select studentKey from students where studentKey = ?";
+        do {
+            try {
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, Input.inputInt());
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    aList.add(getAssignmentByKeyWithoutConnection(rs.getInt(1), con));
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } while (UIutils.goNextYON());
+        try {
+            if (ps != null) {
+                ps.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return (aList);
+    }
+    
+     public static Assignment getAssignmentByKeyWithoutConnection(int assignmentKey, Connection con) {
         Assignment assignment = null;
         String sql = "select * from assignments where assignmentKey =?";
         PreparedStatement ps;
@@ -168,38 +196,5 @@ public class assignmentsDao {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-    }
-
-    public static List<Assignment> userCreateAssignmentsList() {
-        List<Assignment> aList = new ArrayList<>();
-        Connection con = DbUtils.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        showStudentlessAssingmentsList(con);
-        String sql = "select studentKey from students where studentKey = ?";
-        do {
-            try {
-                ps = con.prepareStatement(sql);
-                ps.setInt(1, Input.inputInt());
-                rs = ps.executeQuery();
-                if (rs.next()) {
-                    aList.add(getAssignmentByKeyWithoutConnection(rs.getInt(1), con));
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        } while (UIutils.goNextYON());
-        try {
-            if (ps != null) {
-                ps.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-            con.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return (aList);
     }
 }

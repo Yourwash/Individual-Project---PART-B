@@ -61,7 +61,40 @@ public class studentsDao {
 
         return result;
     }
-
+    
+    public static List<Student> userCreateStudentList() {
+        List<Student> sList = new ArrayList<>();
+        Connection con = DbUtils.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        showCourselessStudentsList(con);
+        String sql = "select studentKey from students where studentKey = ?";
+        do {
+            try {
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, Input.inputInt());
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    sList.add(getStudentByKeyWithoutConnection(rs.getLong(1), con));
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } while (UIutils.goNextYON());
+        try {
+            if (ps != null) {
+                ps.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return (sList);
+    }
+    
     public static boolean insertStudent(Student student) {
         Connection con = DbUtils.getConnection();
         String sql = "insert into students values (?,?,?,?,?)";
@@ -185,43 +218,10 @@ public class studentsDao {
         }
     }
 
-    public static List<Student> userCreateStudentList() {
-        List<Student> sList = new ArrayList<>();
-        Connection con = DbUtils.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        showCourselessStudentsList(con);
-        String sql = "select studentKey from students where studentKey = ?";
-        do {
-            try {
-                ps = con.prepareStatement(sql);
-                ps.setInt(1, Input.inputInt());
-                rs = ps.executeQuery();
-                if (rs.next()) {
-                    sList.add(getStudentByKeyWithoutConnection(rs.getLong(1), con));
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        } while (UIutils.goNextYON());
-        try {
-            if (ps != null) {
-                ps.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-            con.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return (sList);
-    }
-
     public static List<Student> userCreateStudentListWithoutConnection(Connection con) {
         List<Student> sList = new ArrayList<>();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+        PreparedStatement ps;
+        ResultSet rs;
         showCourselessStudentsList(con);
         String sql = "select studentKey from students where studentKey = ?";
         do {

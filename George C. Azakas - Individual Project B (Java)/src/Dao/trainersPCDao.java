@@ -66,6 +66,33 @@ public class trainersPCDao {
         return (tpc);
     }
 
+    public static boolean insertTrainersPerCourse(TrainersPerCourse tpc) {
+        String sql = "insert into trainers_per_course values (?,?)";
+        Connection con = DbUtils.getConnection();
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+            for (Trainer trainer : tpc.getTrainerspc()) {
+                ps.setInt(1, trainer.getTrainerKey());
+                ps.setInt(2, tpc.getCourseKey());
+                ps.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+        return true;
+    }
+
     public static List<TrainersPerCourse> getAllTrainersPerCourse() {
         List<TrainersPerCourse> tpcList = new ArrayList<>();
         Connection con = DbUtils.getConnection();
@@ -114,12 +141,13 @@ public class trainersPCDao {
                     ResultSet.CONCUR_UPDATABLE);
             ps.setInt(1, courseKey);
             rs = ps.executeQuery();
-            rs.next();
-            title = rs.getString(4);
-            key = rs.getInt(5);
-            trainers.add(trainersDao.getTrainerByKey(rs.getInt(3)));
-            while (rs.next()) {
+            if (rs.next()) {
+                title = rs.getString(4);
+                key = rs.getInt(5);
                 trainers.add(trainersDao.getTrainerByKey(rs.getInt(3)));
+                while (rs.next()) {
+                    trainers.add(trainersDao.getTrainerByKey(rs.getInt(3)));
+                }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -132,42 +160,15 @@ public class trainersPCDao {
         return (tpc);
     }
 
-    public static boolean insertTrainersPerCourse(TrainersPerCourse tpc) {
-        String sql = "insert into trainers_per_course values (?,?)";
-        Connection con = DbUtils.getConnection();
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sql);
-            for(Trainer trainer: tpc.getTrainerspc()){
-            ps.setInt(1, trainer.getTrainerKey());
-            ps.setInt(2, tpc.getCourseKey());
-            ps.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                con.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-
-        }
-        return true;
-    }
-    
     public static boolean insertTrainersPerCourseWithoutConnection(TrainersPerCourse tpc, Connection con) {
         String sql = "insert into trainers_per_course values (?,?)";
         PreparedStatement ps;
         try {
             ps = con.prepareStatement(sql);
-            for(Trainer trainer: tpc.getTrainerspc()){
-            ps.setInt(1, trainer.getTrainerKey());
-            ps.setInt(2, tpc.getCourseKey());
-            ps.executeUpdate();
+            for (Trainer trainer : tpc.getTrainerspc()) {
+                ps.setInt(1, trainer.getTrainerKey());
+                ps.setInt(2, tpc.getCourseKey());
+                ps.executeUpdate();
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

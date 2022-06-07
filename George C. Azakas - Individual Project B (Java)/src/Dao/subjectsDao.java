@@ -37,6 +37,39 @@ public class subjectsDao {
         }
     }
 
+    public static Subject getSubjectBySubjectKey(int subjectKey) {
+        Connection con = DbUtils.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Subject subject = null;
+        String sql = "select * from subjects where subjectKey =?";
+        try {
+            ps = con.prepareStatement(sql,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            ps.setInt(1, subjectKey);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                subject = new Subject(rs.getInt(1), rs.getString(2));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return subject;
+    }
+
     public static List<Subject> userCreateSubjectList() {
         List<Subject> sList = new ArrayList<>();
         Connection con = DbUtils.getConnection();
@@ -51,7 +84,7 @@ public class subjectsDao {
                 rs = ps.executeQuery();
                 if (rs.next()) {
                     sList.add(getSubjectBySubjectKeyWithoutConnection(rs.getInt(1), con));
-                }                
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -112,36 +145,4 @@ public class subjectsDao {
         return subject;
     }
 
-    public static Subject getSubjectBySubjectKey(int subjectKey) {
-        Connection con = DbUtils.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Subject subject = null;
-        String sql = "select * from subjects where subjectKey =?";
-        try {
-            ps = con.prepareStatement(sql,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            ps.setInt(1, subjectKey);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                subject = new Subject(rs.getInt(1), rs.getString(2));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (rs != null) {
-                    rs.close();
-                }
-                con.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return subject;
-    }
 }

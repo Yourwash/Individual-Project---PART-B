@@ -5,8 +5,6 @@
  */
 package Dao;
 
-import static Dao.studentsDao.getStudentByKeyWithoutConnection;
-import static Dao.studentsDao.showCourselessStudentsList;
 import Models.Assignment;
 import Models.AssignmentsPerStudent;
 import Models.Student;
@@ -95,21 +93,40 @@ public class assignmentsPSDao {
         return (apsList);
     }
 
-    public static List<AssignmentsPerStudent> getAssignmentsPerStudentByCourseKeyWithoutConnection(int courseKey, Connection con) {
-        List<AssignmentsPerStudent> apsList = null;
-        String sql = "select spc_studentKey from students_per_course where spc_courseKey = ?";
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            ps = con.prepareStatement(sql,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            ps.setInt(1, courseKey);
-            rs = ps.executeQuery();
-            apsList = new ArrayList<>();
-            while (rs.next()) {
-                apsList.add(getAssignmentsPerStudentByStudentKeyWithoutConnection(rs.getLong(1), con));
+    public static List<AssignmentsPerStudent> userCreateAssignmentsPerStudentList() {
+        List<AssignmentsPerStudent> apsList = new ArrayList<>();
+        AssignmentsPerStudent aps = new AssignmentsPerStudent();
+        Student student;
+        Connection con = DbUtils.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        studentsDao.showAssignmentlessStudentsList(con);
+        String sql = "select studentKey from students where studentKey = ?";
+        do {
+            try {
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, Input.inputInt());
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    student = studentsDao.getStudentByKeyWithoutConnection(rs.getLong(1), con);
+                    aps.setStudentKey(rs.getLong(1));
+                    aps.setFirstName(student.getFirstName());
+                    aps.setLastName(student.getLastName());
+                    aps.setAssignmentsps(assignmentsDao.userCreateAssignmentsList());
+                    apsList.add(aps);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
+        } while (UIutils.goNextYON());
+        try {
+            if (ps != null) {
+                ps.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            con.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -151,28 +168,6 @@ public class assignmentsPSDao {
         return (aps);
     }
 
-    public static AssignmentsPerStudent getAssignmentsPerStudentByStudentKeyWithoutConnection(Long studentKey, Connection con) {
-        AssignmentsPerStudent aps = new AssignmentsPerStudent();
-        String sql = "select * from assignments_per_student_per_course_list where studentKey = ?";
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            ps = con.prepareStatement(sql,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            ps.setLong(1, studentKey);
-            rs = ps.executeQuery();
-            rs.next();
-            aps.setStudentKey(rs.getLong(9));
-            aps.setFirstName(rs.getString(7));
-            aps.setLastName(rs.getString(8));
-            aps.setAssignmentsps(getAssignmentsByStudentKeyWithoutConnection(studentKey, con));
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return (aps);
-    }
-
     public static AssignmentsPerStudent getAssignmentsPerStudentByStudentKeyAndCourseKey(Long studentKey, int courseKey) {
         AssignmentsPerStudent aps = new AssignmentsPerStudent();
         Connection con = DbUtils.getConnection();
@@ -205,6 +200,28 @@ public class assignmentsPSDao {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+        }
+        return (aps);
+    }
+
+    public static AssignmentsPerStudent getAssignmentsPerStudentByStudentKeyWithoutConnection(Long studentKey, Connection con) {
+        AssignmentsPerStudent aps = new AssignmentsPerStudent();
+        String sql = "select * from assignments_per_student_per_course_list where studentKey = ?";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(sql,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            ps.setLong(1, studentKey);
+            rs = ps.executeQuery();
+            rs.next();
+            aps.setStudentKey(rs.getLong(9));
+            aps.setFirstName(rs.getString(7));
+            aps.setLastName(rs.getString(8));
+            aps.setAssignmentsps(getAssignmentsByStudentKeyWithoutConnection(studentKey, con));
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return (aps);
     }
@@ -259,6 +276,27 @@ public class assignmentsPSDao {
         return (assignments);
     }
 
+    public static List<AssignmentsPerStudent> getAssignmentsPerStudentByCourseKeyWithoutConnection(int courseKey, Connection con) {
+        List<AssignmentsPerStudent> apsList = null;
+        String sql = "select spc_studentKey from students_per_course where spc_courseKey = ?";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(sql,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            ps.setInt(1, courseKey);
+            rs = ps.executeQuery();
+            apsList = new ArrayList<>();
+            while (rs.next()) {
+                apsList.add(getAssignmentsPerStudentByStudentKeyWithoutConnection(rs.getLong(1), con));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return (apsList);
+    }
+
     public static List<Assignment> getAssignmentsByStudentKeyAndCourseKeyWithoutConnection(Long studentKey, int courseKey, Connection con) {
         List<Assignment> assignments = new ArrayList<>();
         Assignment assignment;
@@ -287,43 +325,4 @@ public class assignmentsPSDao {
         return (assignments);
     }
 
-    public static List<AssignmentsPerStudent> userCreateAssignmentsPerStudentList() {
-        List<AssignmentsPerStudent> apsList = new ArrayList<>();
-        AssignmentsPerStudent aps = new AssignmentsPerStudent();
-        Student student;
-        Connection con = DbUtils.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        studentsDao.showAssignmentlessStudentsList(con);
-        String sql = "select studentKey from students where studentKey = ?";
-        do {
-            try {
-                ps = con.prepareStatement(sql);
-                ps.setInt(1, Input.inputInt());
-                rs = ps.executeQuery();
-                if (rs.next()) {
-                    student = studentsDao.getStudentByKeyWithoutConnection(rs.getLong(1), con);
-                    aps.setStudentKey(rs.getLong(1));
-                    aps.setFirstName(student.getFirstName());
-                    aps.setLastName(student.getLastName());
-                    aps.setAssignmentsps(assignmentsDao.userCreateAssignmentsList());
-                    apsList.add(aps);
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        } while (UIutils.goNextYON());
-        try {
-            if (ps != null) {
-                ps.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-            con.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return (apsList);
-    }
 }

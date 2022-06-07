@@ -56,27 +56,6 @@ public class assignmentsPSPCDao {
         return (assignmentsPSPC);
     }
 
-    public static AssignmentsPerStudentPerCourse getAssignmentsPerStudentPerCourseByCourseKeyWithoutConnection(int courseKey, Connection con) {
-        AssignmentsPerStudentPerCourse apspc = new AssignmentsPerStudentPerCourse();
-        String sql = "select courseKey, title from courses where courseKey = ?";
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            ps = con.prepareStatement(sql,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            ps.setInt(1, courseKey);
-            rs = ps.executeQuery();
-            rs.next();
-            apspc.setCourseKey(rs.getInt(1));
-            apspc.setTitle(rs.getString(2));
-            apspc.setAssignmentspspc(assignmentsPSDao.getAssignmentsPerStudentByCourseKeyWithoutConnection(courseKey, con));
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return (apspc);
-    }
-
     public static boolean insertAssignmentsPerStudentPerCourse(AssignmentsPerStudentPerCourse apspc) {
         String sql = "insert into assignments_per_student_per_course values (?,?,?)";
         Connection con = DbUtils.getConnection();
@@ -106,5 +85,26 @@ public class assignmentsPSPCDao {
         }
         return true;
     }
-
+    
+    public static AssignmentsPerStudentPerCourse getAssignmentsPerStudentPerCourseByCourseKeyWithoutConnection(int courseKey, Connection con) {
+        AssignmentsPerStudentPerCourse apspc = new AssignmentsPerStudentPerCourse();
+        String sql = "select courseKey, title from courses where courseKey = ?";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(sql,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            ps.setInt(1, courseKey);
+            rs = ps.executeQuery();
+            rs.next();
+            apspc.setCourseKey(rs.getInt(1));
+            apspc.setTitle(rs.getString(2));
+            apspc.setAssignmentspspc(assignmentsPSDao.getAssignmentsPerStudentByCourseKeyWithoutConnection(courseKey, con));
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return (apspc);
+    }
+    
 }
